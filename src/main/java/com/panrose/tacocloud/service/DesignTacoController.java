@@ -11,11 +11,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -30,8 +26,11 @@ public class DesignTacoController {
       new Ingredient("COTO", "Corn Tortilla", Ingredient.Type.WRAP),
       new Ingredient("GRBF", "Ground Beef", Ingredient.Type.PROTEIN),
       new Ingredient("CARN", "Carnitas", Ingredient.Type.PROTEIN),
+      new Ingredient("CHBR", "Chicken Breast", Ingredient.Type.PROTEIN),
+      new Ingredient("TDLN", "Tenderloin", Ingredient.Type.PROTEIN),
       new Ingredient("TMTO", "Diced Tomatoes", Ingredient.Type.VEGGIES),
       new Ingredient("LETC", "Lettuce", Ingredient.Type.VEGGIES),
+      new Ingredient("RDPR", "Red Pepper", Ingredient.Type.VEGGIES),
       new Ingredient("CHED", "Cheddar", Ingredient.Type.CHEESE),
       new Ingredient("JACK", "Monterrey Jack", Ingredient.Type.CHEESE),
       new Ingredient("SLSA", "Salsa", Ingredient.Type.SAUCE),
@@ -42,6 +41,14 @@ public class DesignTacoController {
     for (Type type : types) {
       model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
     }
+  }
+
+  @PostMapping
+  public String processTaco(Taco taco, @ModelAttribute TacoOrder tacoOrder) {
+    tacoOrder.addTaco(taco);
+    log.info("Processing taco: {}", taco);
+
+    return "redirect:/orders/current";
   }
 
   @ModelAttribute(name="tacoOrder")
