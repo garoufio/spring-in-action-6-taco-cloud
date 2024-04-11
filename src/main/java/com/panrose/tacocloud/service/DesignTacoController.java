@@ -52,7 +52,7 @@ public class DesignTacoController {
   }
 
   @ModelAttribute(name="tacoOrder")
-  public TacoOrder order() {
+  public TacoOrder tacoOrder() {
     return new TacoOrder();
   }
 
